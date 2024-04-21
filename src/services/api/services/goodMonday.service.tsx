@@ -88,4 +88,19 @@ const removeTask = async (id: string) => {
 }
 
 
+<<<<<<< HEAD
 export { registerUser, logInUser, getTasks, addTask, updateTask, removeTask }
+=======
+const getTodoItems = async () => {
+    try {
+        const { data } = await HttpService.get(`/to-do-items`, null);
+        return data;
+
+    } catch (error) {
+        return error;
+    }
+}
+
+
+export { registerUser, logInUser, getTodoItems }
+>>>>>>> 175d273... feat(tasks): add base crud oprations for task list

@@ -9,6 +9,7 @@ import AuthProvider from '../../context/AuthContext';
 const MainLayout = () => {
     return (
         <AuthProvider>
+
             <Navbar />
             <Outlet />
             <Footer />

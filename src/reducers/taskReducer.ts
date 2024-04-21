@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Task } from '../interfaces/Task';
 
 interface PendingChange {
@@ -33,11 +34,26 @@ const taskReducer = (state: State, action: Action) => {
     switch (action.type)
     {
         case "ADD_TASK": {
+=======
+const initialState = {
+    prevState: null,
+    nextState: null,
+    tasks: []
+};
+
+const taskReducer = (state, action) => {
+    switch (action.type) {
+        case "RESET": {
+            return initialState;
+        }
+        case "ADD_TODO": {
+>>>>>>> 175d273... feat(tasks): add base crud oprations for task list
             return {
                 ...state,
                 prevState: state,
                 nextState: null,
                 tasks: [
+<<<<<<< HEAD
                     ...state.tasks,
                     {
                         title: action.title,
@@ -56,11 +72,26 @@ const taskReducer = (state: State, action: Action) => {
             const { index } = action;
             const before = state.tasks.slice(0, index);
             const after = state.tasks.slice(index + 1);
+=======
+                    {
+                        text: action.text,
+                        isDone: false
+                    },
+                    ...state.tasks
+                ]
+            };
+        }
+        case "DELETE_TODO": {
+            const { i } = action;
+            const before = state.tasks.slice(0, i);
+            const after = state.tasks.slice(i + 1);
+>>>>>>> 175d273... feat(tasks): add base crud oprations for task list
             const newTodos = [...before, ...after];
             return {
                 ...state,
                 prevState: state,
                 nextState: null,
+<<<<<<< HEAD
                 tasks: newTodos,
                 pendingChanges: [...state.pendingChanges, {
                     type: 'DELETE_TASK', task: {
@@ -74,11 +105,35 @@ const taskReducer = (state: State, action: Action) => {
             const before = state.tasks.slice(0, index);
             const after = state.tasks.slice(index + 1);
             const newItem = { ...state.tasks[index], title };
+=======
+                tasks: newTodos
+            };
+        }
+        case "SET_CHECK": {
+            const { i, isDone } = action;
+            const before = state.tasks.slice(0, i);
+            const after = state.tasks.slice(i + 1);
+            const newItem = { ...state.tasks[i], isDone };
             const newTodos = [...before, newItem, ...after];
             return {
                 ...state,
                 prevState: state,
                 nextState: null,
+                tasks: newTodos
+            };
+        }
+        case "EDIT_TODO": {
+            const { i, text } = action;
+            const before = state.tasks.slice(0, i);
+            const after = state.tasks.slice(i + 1);
+            const newItem = { ...state.tasks[i], text };
+>>>>>>> 175d273... feat(tasks): add base crud oprations for task list
+            const newTodos = [...before, newItem, ...after];
+            return {
+                ...state,
+                prevState: state,
+                nextState: null,
+<<<<<<< HEAD
                 tasks: newTodos,
                 pendingChanges: [...state.pendingChanges, {
                     type: 'EDIT_TASK', task: {
@@ -86,6 +141,9 @@ const taskReducer = (state: State, action: Action) => {
                         done
                     }
                 }]
+=======
+                tasks: newTodos
+>>>>>>> 175d273... feat(tasks): add base crud oprations for task list
             };
         }
         case "UNDO": {
