@@ -25,4 +25,15 @@ const logInUser = async (payload: LoginPayload) => {
 }
 
 
-export { registerUser, logInUser }
+const getTodoItems = async () => {
+    try {
+        const { data } = await HttpService.get(`/to-do-items`, null);
+        return data;
+
+    } catch (error) {
+        return error;
+    }
+}
+
+
+export { registerUser, logInUser, getTodoItems }

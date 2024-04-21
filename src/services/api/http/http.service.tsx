@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useAuth } from '../../../context/AuthContext';
 import { apiConfig } from '../config/apiConfig';
 
 const HTTP_METHODS = Object.freeze({
@@ -20,8 +21,9 @@ class HttpService {
     }
 
     getAuthorization() {
-        const token = '';
-        return token ? { Authorization: `Bearer ${token}` } : {}
+        const token = window.localStorage.getItem('loggedUser') || '';
+        const tokenWithRemoveQuotes = token.slice(1, -1);
+        return token ? { Authorization: `Bearer ${tokenWithRemoveQuotes}` } : {}
     }
 
     service() {

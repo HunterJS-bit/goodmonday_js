@@ -11,6 +11,7 @@ const MainLayout = () => {
     return (
 
         <AuthProvider>
+
             <Navbar />
             <Outlet />
             <Footer />

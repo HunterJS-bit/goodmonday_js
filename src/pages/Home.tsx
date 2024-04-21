@@ -1,6 +1,9 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import TaskList from '../components/tasks/List/TaskList';
 import { useAuth } from '../context/AuthContext';
+import Page from '../layout/PageLayou';
+
 
 
 const HomePage = () => {
@@ -11,11 +14,9 @@ const HomePage = () => {
     return <Navigate to="/login" replace />;
   }
 
-  return <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-4 rounded">
-
-    Click Me
-
-  </button>;
+  return (<Page>
+    <TaskList />
+  </Page>);
 }
 
 export default HomePage;
