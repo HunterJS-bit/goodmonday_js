@@ -39,7 +39,8 @@ class HttpService {
                 method,
                 url,
                 ...options
-            })
+            });
+            return response;
         } catch (error) {
             this.normalizeError(error);
         }
