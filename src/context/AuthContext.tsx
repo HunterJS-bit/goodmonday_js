@@ -10,6 +10,7 @@ const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
 
+
     const logIn = async (token: string) => {
         if (token) {
             setLoggedUser(token);
