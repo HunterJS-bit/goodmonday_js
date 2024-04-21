@@ -10,11 +10,32 @@ const TaskList = () => {
 
     const [state, dispatch] = useReducer(taskReducer, initialState);
 
-    console.log('asdasd', state)
-
-
     const onAddTask = () => {
         dispatch({ type: "ADD_TODO", text: 'as' });
+    }
+
+    const onUndo = () => {
+        dispatch({ type: "UNDO" })
+    }
+
+    const onRedo = () => {
+        dispatch({ type: "REDO" })
+    }
+
+    const onEditTask = () => {
+        dispatch({ type: 'EDIT_TODO' })
+    }
+
+    const onCompleteTask = (index: number, isDone: boolean) => {
+        dispatch({ type: "SET_CHECK", index, isDone: !isDone })
+    }
+
+    const onDeleteTask = (index: number) => {
+        dispatch({ type: "DELETE_TODO", index })
+    }
+
+    const onConfirm = () => {
+        console.log(state?.tasks)
     }
 
     return (
@@ -22,12 +43,12 @@ const TaskList = () => {
             <div className="mt-8 mb-3">
                 <button
                     className="border-2 border-red-500 p-2 text-red-500"
-                    onClick={() => dispatch({ type: "UNDO" })}
+                    onClick={onUndo}
                     disabled={!state.prevState}
                 >      ← Undo</button>
                 <button
                     className="border-2 border-indigo-500 p-2 text-indigo-500 ml-4"
-                    onClick={() => dispatch({ type: "REDO" })}
+                    onClick={onRedo}
                     disabled={!state.nextState}
                 > Redo →</button>
             </div>
@@ -39,15 +60,25 @@ const TaskList = () => {
                 <span>Add</span>
             </button>
             <div className='pt-5'>
-                {state.tasks.map((todo, i) => (
+                {state.tasks.map((todo, i: number) => (
                     <TaskItem
                         key={i}
                         text={todo.text}
                         isCompleted={todo.isDone}
-                        onCheck={() => dispatch({ type: "SET_CHECK", i, isDone: !todo.isDone })}
-                        onRemove={() => dispatch({ type: "DELETE_TODO", i })}
+                        onEdit={() => onEditTask()}
+                        onCheck={() => onCompleteTask(i, !todo.isDone)}
+                        onRemove={() => onDeleteTask(i)}
                     />
                 ))}
+            </div>
+
+            <div className='pt-5'>
+                <button
+                    className="border-2 border-gray-500 p-2 trounded-lg flex"
+                    onClick={onConfirm}
+                >
+                    <span>Confirm</span>
+                </button>
             </div>
         </>
 
