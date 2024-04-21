@@ -5,12 +5,16 @@ import { emailvalidation, passwordValidation } from '../../utils/validations/reg
 import Button from '../common/Buttons/Button';
 import Input from '../common/inputs/Input';
 import { LoginData } from '../../interfaces/User';
+import { useAuth } from '../../context/AuthContext';
+
 
 
 
 
 
 const LoginForm = () => {
+
+    const { logIn } = useAuth();
 
     const {
         register,
@@ -29,7 +33,7 @@ const LoginForm = () => {
     const onSubmit = async (data: LoginData) => {
         try {
             const res = await logInUser(data)
-            console.log('Done', res)
+            logIn(res?.token);
         } catch (e) {
             console.log('err', e)
         }
