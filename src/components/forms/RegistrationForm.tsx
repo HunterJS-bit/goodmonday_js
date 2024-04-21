@@ -1,14 +1,12 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { registerUser } from '../../services/api/services/goodMonday.service';
 import Button from '../common/Buttons/Button';
 import Input from '../common/inputs/Input';
+import { RegistrationData } from '../../interfaces/User';
+import { userNameValidation, emailvalidation, passwordValidation } from '../../utils/validations/registration';
 
-interface RegistrationData {
-    name: string;
-    email: string;
-    password: string;
-    repassword: string;
-}
+
 
 
 const RegistrationFrom = () => {
@@ -32,10 +30,14 @@ const RegistrationFrom = () => {
 
     const password = watch('password', '123456');
 
-    const onSubmit = (data: RegistrationData) => {
-        console.log('Done', data)
-        // console.log(data);
-        // reset();
+    const onSubmit = async (data: RegistrationData) => {
+        try {
+            const res = await registerUser(data)
+            console.log('Done', res)
+        } catch (e) {
+            console.log('err', e)
+        }
+        reset();
     }
 
     return (
@@ -49,12 +51,7 @@ const RegistrationFrom = () => {
                 <div className="md:w-2/3">
                     <Input
                         name={'name'}
-                        register={register("name", {
-                            required: "Name is a required field", minLength: {
-                                value: 3,
-                                message: "Field must be longer then 3 char"
-                            }
-                        })}
+                        register={register("name", userNameValidation)}
                         type="text" />
                     {errors?.name && <p>{errors.name.message}</p>}
                 </div>
@@ -69,12 +66,7 @@ const RegistrationFrom = () => {
                 <div className="md:w-2/3">
                     <Input
                         name={'email'}
-                        register={register("email", {
-                            required: "Email is a required field", minLength: {
-                                value: 6,
-                                message: "Field must be longer then 6 char"
-                            }
-                        })}
+                        register={register("email", emailvalidation)}
                         type="email" />
                     {errors?.email && <p>{errors.email.message}</p>}
                 </div>
@@ -89,12 +81,7 @@ const RegistrationFrom = () => {
                 <div className="md:w-2/3">
                     <Input
                         name={'password'}
-                        register={register("password", {
-                            required: "Password is a required field", minLength: {
-                                value: 6,
-                                message: "Field must be longer then 6 char"
-                            }
-                        })}
+                        register={register("password", passwordValidation)}
                         type="password" />
                     {errors?.password && <p>{errors.password.message}</p>}
                 </div>
@@ -108,13 +95,7 @@ const RegistrationFrom = () => {
                 <div className="md:w-2/3">
                     <Input
                         name={'repassword'}
-                        register={register("repassword", {
-                            required: "Password is a required field", minLength: {
-                                value: 6,
-                                message: "Field must be longer then 6 char"
-                            },
-                            validate: value => value === password || 'The passwords do not match'
-                        })}
+                        register={register("repassword", passwordValidation)}
                         type="password" />
                     {errors?.repassword && <p>{errors.repassword.message}</p>}
                 </div>
