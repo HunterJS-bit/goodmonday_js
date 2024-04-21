@@ -6,3 +6,9 @@ export interface RegistrationData {
 }
 
 export type RegistrationPayload = Omit<RegistrationData, "repassword">
+
+
+export interface LoginData {
+    email: string;
+    password: string;
+}
