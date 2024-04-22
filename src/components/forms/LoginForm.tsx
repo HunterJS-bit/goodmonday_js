@@ -72,7 +72,7 @@ const LoginForm = () => {
             </div>
             <div className="md:flex md:items-center">
                 <div className="md:w-2/3">
-                    <Button type="submit">
+                    <Button className="bg-indigo-600 text-white" type="submit">
                         Login
                     </Button>
                 </div>

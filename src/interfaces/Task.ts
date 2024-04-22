@@ -1,12 +1,12 @@
 export interface Task {
     id?: string;
-    text: string;
-    isDone: boolean;
+    title: string;
+    done: boolean;
 }
 
 export interface TaskCreatePayload {
     id?: string;
-    text: string;
+    title: string;
     done: boolean;
 }
 

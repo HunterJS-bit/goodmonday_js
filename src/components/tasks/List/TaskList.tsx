@@ -12,8 +12,6 @@ type TaskListProps = {
 
 const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
 
-
-
     const [state, dispatch] = useReducer(taskReducer, { ...initialState, tasks });
 
 
@@ -64,7 +62,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
                 <span>Add</span>
             </button>
             <div className='pt-5'>
-                {state.tasks.map((task, i: number) => (
+                {state.tasks.map((task: Task, i: number) => (
                     <TaskItem
                         key={i}
                         text={task.title}
@@ -89,9 +87,5 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
     )
 
 };
-
-TaskList.PropTypes = {
-    tasks: PropTypes.array
-}
 
 export default TaskList;
