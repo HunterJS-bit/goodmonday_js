@@ -6,10 +6,10 @@ import TaskItem from './item/TaskItem';
 import Button from '../../common/Buttons/Button';
 
 
-
 type TaskListProps = {
     tasks: Task[]
 }
+
 
 const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
 
@@ -28,20 +28,17 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
         dispatch({ type: "REDO" })
     }
 
-    const onEditTask = () => {
-        dispatch({ type: 'EDIT_TODO' })
-    }
-
-    const onCompleteTask = (index: number, isDone: boolean) => {
-        dispatch({ type: "SET_CHECK", index, isDone: !isDone })
+    const onEditTask = (index: number, done: boolean, title: string) => {
+        dispatch({ type: 'EDIT_TODO', index, done, title })
     }
 
     const onDeleteTask = (index: number) => {
         dispatch({ type: "DELETE_TODO", index })
     }
 
-    const onConfirm = () => {
-        console.log(state?.tasks)
+    const onConfirm = async () => {
+        const { pendingChanges } = state;
+        await taskListCrudAction(pendingChanges);
     }
 
     return (
@@ -57,7 +54,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
                     onClick={onRedo}
                     disabled={!state.nextState}
                 > Redo →</Button>
-            </div>
+            </div >
             <Button
                 className="border-2 border-green-500 text-green-500 hover:text-white hover:bg-green-500 rounded-lg flex"
                 onClick={onAddTask}
@@ -66,17 +63,19 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
                 <span>Add</span>
             </Button>
             <div className='pt-5'>
-                {state.tasks.map((task: Task, i: number) => (
-                    <TaskItem
-                        key={i}
-                        text={task.title}
-                        isCompleted={task.done}
-                        onEdit={(done: boolean, text: string) => onEditTask(i, done, text)}
-                        onCheck={() => onEditTask(i, !task.done, task.title)}
-                        onRemove={() => onDeleteTask(i)}
-                    />
-                ))}
-            </div>
+                {
+                    state.tasks.map((task: Task, i: number) => (
+                        <TaskItem
+                            key={i}
+                            text={task.title}
+                            isCompleted={task.done}
+                            onEdit={(done: boolean, text: string) => onEditTask(i, done, text)}
+                            onCheck={() => onEditTask(i, !task.done, task.title)}
+                            onRemove={() => onDeleteTask(i)}
+                        />
+                    ))
+                }
+            </div >
 
             <div className='pt-5'>
                 <Button
@@ -85,7 +84,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
                 >
                     <span>Confirm Changes</span>
                 </Button>
-            </div>
+            </div >
         </>
 
     )
