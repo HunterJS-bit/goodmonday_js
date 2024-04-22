@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useAuth } from '../../../context/AuthContext';
 import { apiConfig } from '../config/apiConfig';
 
 const HTTP_METHODS = Object.freeze({

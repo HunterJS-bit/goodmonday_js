@@ -9,6 +9,7 @@ import { userNameValidation, emailvalidation, passwordValidation } from '../../u
 
 const RegistrationFrom = () => {
 
+    const [apiErrors, setApiErrors] = useState(null)
     const {
         register,
         handleSubmit,
@@ -31,9 +32,11 @@ const RegistrationFrom = () => {
 
     const onSubmit = async (data: RegistrationData) => {
 
-        try {
+        try
+        {
             const res = await registerUser(data)
-        } catch (e) {
+        } catch (e)
+        {
             console.log('error', e)
         }
         reset();
