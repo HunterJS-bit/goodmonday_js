@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import TaskList from '../components/tasks/List/TaskList';
+import TasksPage from '../components/tasks';
+
 import { useAuth } from '../context/AuthContext';
 import Page from '../layout/PageLayou';
 
@@ -15,7 +16,7 @@ const HomePage = () => {
   }
 
   return (<Page>
-    <TaskList />
+    <TasksPage />
   </Page>);
 }
 

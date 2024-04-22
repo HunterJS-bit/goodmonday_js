@@ -1,64 +1,66 @@
 const initialState = {
     prevState: null,
     nextState: null,
-    tasks: []
+    tasks: [],
+    pendingChanges: []
 };
 
 const taskReducer = (state, action) => {
     switch (action.type) {
-        case "RESET": {
-            return initialState;
-        }
         case "ADD_TODO": {
             return {
                 ...state,
                 prevState: state,
                 nextState: null,
                 tasks: [
+                    ...state.tasks,
                     {
-                        text: action.text,
-                        isDone: false
+                        title: action.title,
+                        done: false
                     },
-                    ...state.tasks
-                ]
+                ],
+                pendingChanges: [...state.pendingChanges, {
+                    type: 'ADD_TODO', task: {
+                        title: action.title,
+                        done: false
+                    }
+                }]
             };
         }
         case "DELETE_TODO": {
-            const { i } = action;
-            const before = state.tasks.slice(0, i);
-            const after = state.tasks.slice(i + 1);
+            const { index } = action;
+            const before = state.tasks.slice(0, index);
+            const after = state.tasks.slice(index + 1);
             const newTodos = [...before, ...after];
             return {
                 ...state,
                 prevState: state,
                 nextState: null,
-                tasks: newTodos
-            };
-        }
-        case "SET_CHECK": {
-            const { i, isDone } = action;
-            const before = state.tasks.slice(0, i);
-            const after = state.tasks.slice(i + 1);
-            const newItem = { ...state.tasks[i], isDone };
-            const newTodos = [...before, newItem, ...after];
-            return {
-                ...state,
-                prevState: state,
-                nextState: null,
-                tasks: newTodos
+                tasks: newTodos,
+                pendingChanges: [...state.pendingChanges, {
+                    type: 'DELETE_TODO', task: {
+                        id: index
+                    }
+                }]
             };
         }
         case "EDIT_TODO": {
-            const { i, text } = action;
-            const before = state.tasks.slice(0, i);
-            const after = state.tasks.slice(i + 1);
-            const newItem = { ...state.tasks[i], text };
+            const { index, title, done } = action;
+            const before = state.tasks.slice(0, index);
+            const after = state.tasks.slice(index + 1);
+            const newItem = { ...state.tasks[index], title };
             const newTodos = [...before, newItem, ...after];
             return {
                 ...state,
                 prevState: state,
                 nextState: null,
-                tasks: newTodos
+                tasks: newTodos,
+                pendingChanges: [...state.pendingChanges, {
+                    type: 'EDIT_TODO', task: {
+                        title,
+                        done
+                    }
+                }]
             };
         }
         case "UNDO": {
