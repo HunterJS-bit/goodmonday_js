@@ -70,9 +70,9 @@ const LoginForm = () => {
                     {errors?.password && <p>{errors.password.message}</p>}
                 </div>
             </div>
-            <div className="md:flex md:items-center">
+            <div className="md:flex md:justify-end">
                 <div className="md:w-2/3">
-                    <Button className="bg-indigo-600 text-white" type="submit">
+                    <Button className="bg-indigo-600 text-white w-full" type="submit">
                         Login
                     </Button>
                 </div>
