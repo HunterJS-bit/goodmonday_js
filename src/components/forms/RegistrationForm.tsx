@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { registerUser } from '../../services/api/services/goodMonday.service';
 import Button from '../common/Buttons/Button';
 import Input from '../common/inputs/Input';
 import { RegistrationData } from '../../interfaces/User';
 import { userNameValidation, emailvalidation, passwordValidation } from '../../utils/validations/registration';
-
-
 
 
 const RegistrationFrom = () => {
@@ -20,22 +18,23 @@ const RegistrationFrom = () => {
     } = useForm(
         {
             defaultValues: {
-                name: "test1user",
-                email: "test1user@gmail.com",
-                password: "123456",
-                repassword: "123456"
+                name: "",
+                email: "",
+                password: "",
+                repassword: ""
             },
         }
     );
 
-    const password = watch('password', '123456');
+    const password = useRef({});
+    password.current = watch("password", "");
 
     const onSubmit = async (data: RegistrationData) => {
+
         try {
             const res = await registerUser(data)
-            console.log('Done', res)
         } catch (e) {
-            console.log('err', e)
+            console.log('error', e)
         }
         reset();
     }
@@ -81,7 +80,9 @@ const RegistrationFrom = () => {
                 <div className="md:w-2/3">
                     <Input
                         name={'password'}
-                        register={register("password", passwordValidation)}
+                        register={register("password", {
+                            ...passwordValidation
+                        })}
                         type="password" />
                     {errors?.password && <p>{errors.password.message}</p>}
                 </div>
@@ -95,14 +96,18 @@ const RegistrationFrom = () => {
                 <div className="md:w-2/3">
                     <Input
                         name={'repassword'}
-                        register={register("repassword", passwordValidation)}
+                        register={register("repassword", {
+                            ...passwordValidation,
+                            validate: value =>
+                                value === password.current || "The passwords do not match"
+                        })}
                         type="password" />
                     {errors?.repassword && <p>{errors.repassword.message}</p>}
                 </div>
             </div>
-            <div className="md:flex md:items-center">
+            <div className="md:flex md:justify-end">
                 <div className="md:w-2/3">
-                    <Button type="submit">
+                    <Button type="submit" className="bg-indigo-600 text-white w-full">
                         Register
                     </Button>
                 </div>

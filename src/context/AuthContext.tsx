@@ -1,10 +1,21 @@
-import { useContext, createContext, useMemo } from "react";
+import { useContext, createContext, useMemo, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalState } from "../hooks/useLocalStorage";
 
-const AuthContext = createContext();
+interface AuthContextType {
+    loggedUser: string;
+    logIn: (token: string) => void;
+    logOut: () => void;
+}
 
-const AuthProvider = ({ children }) => {
+
+const AuthContext = createContext<AuthContextType | null>(null);
+
+interface AuthProviderProps {
+    children: ReactNode;
+}
+
+const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const [loggedUser, setLoggedUser] = useLocalState('loggedUser', '');
 
@@ -12,7 +23,8 @@ const AuthProvider = ({ children }) => {
 
 
     const logIn = async (token: string) => {
-        if (token) {
+        if (token)
+        {
             setLoggedUser(token);
             navigate('/');
         }

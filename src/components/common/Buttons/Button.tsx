@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { ButtonHTMLAttributes, ReactNode } from 'react';
 
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+    children?: ReactNode;
+    className?: string;
+};
 
-const Button = ({ children, ...props }) => {
+const Button: React.FC<ButtonProps> = ({ children, className, ...props }) => {
+
+    const buttonClasses = `shadow focus:shadow-outline focus:outline-none font-bold py-2 px-4 rounded ${className || ''}`;
 
     return (
         <button
-            className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+            className={buttonClasses}
             {...props}>
             {children}
         </button>)

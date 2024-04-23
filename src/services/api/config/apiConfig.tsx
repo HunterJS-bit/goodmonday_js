@@ -2,7 +2,7 @@ export const apiConfig = {
     returnRejectedPromiseOnError: true,
     withCredentials: false,
     timeout: 3000,
-    baseUrl: 'https://good-monday-js-test.vercel.app',
+    baseUrl: '',
     headers: {
         common: {
             "Cache-Control": "no-cache, no-store, must-revalidate",
