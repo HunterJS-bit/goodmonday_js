@@ -5,14 +5,14 @@ interface PendingChange {
     task: Task;
 }
 
-interface State {
+export interface State {
     prevState: State | null;
     nextState: State | null;
     tasks: Task[];
     pendingChanges: PendingChange[];
 }
 
-type Action =
+export type Action =
     | { type: "ADD_TASK"; title: string }
     | { type: "DELETE_TASK"; index: number }
     | { type: "EDIT_TASK"; index: number; title: string; done: boolean }
