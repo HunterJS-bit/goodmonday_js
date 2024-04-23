@@ -15,8 +15,9 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
     tasks
   });
 
+
   const onAddTask = () => {
-    dispatch({ type: 'ADD_TASK', title: '' });
+    dispatch({ type: 'ADD_TASK', title: 'Test' });
   };
 
   const onUndo = () => {
@@ -27,35 +28,33 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
     dispatch({ type: 'REDO' });
   };
 
-  const onEditTask = (index: number, done: boolean, title: string) => {
-    dispatch({ type: 'EDIT_TASK', index, done, title });
+  const onEditTask = (id: string, index: number, done: boolean, title: string) => {
+    dispatch({ type: 'EDIT_TASK', id, index, done, title });
   };
 
-  const onDeleteTask = (index: number) => {
-    dispatch({ type: 'DELETE_TASK', index });
+  const onDeleteTask = (index: number, id: string) => {
+    dispatch({ type: 'DELETE_TASK', index, id });
   };
 
   const onConfirm = async () => {
-    const { pendingChanges } = state;
-    console.log('changes', pendingChanges);
+    taskListCrudAction(state.pendingChanges)
   };
 
+  console.log('IDemoo', state.pendingChanges)
   return (
     <>
       <div className="mt-8 mb-3">
         <Button
-          className={`border-2 border-red-500 text-red-500 ${
-            !state.prevState && 'cursor-not-allowed opacity-50'
-          }`}
+          className={`border-2 border-red-500 text-red-500 ${!state.prevState && 'cursor-not-allowed opacity-50'
+            }`}
           onClick={onUndo}
           disabled={!state.prevState}>
           {' '}
           ← Undo
         </Button>
         <Button
-          className={`border-2 border-indigo-500 text-indigo-500 ml-4 ${
-            !state.nextState && 'cursor-not-allowed opacity-50'
-          }`}
+          className={`border-2 border-indigo-500 text-indigo-500 ml-4 ${!state.nextState && 'cursor-not-allowed opacity-50'
+            }`}
           onClick={onRedo}
           disabled={!state.nextState}>
           {' '}
@@ -87,18 +86,17 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
             key={i}
             text={task.title}
             isCompleted={task.done}
-            onEdit={(done: boolean, text: string) => onEditTask(i, done, text)}
-            onCheck={() => onEditTask(i, !task.done, task.title)}
-            onRemove={() => onDeleteTask(i)}
+            onEdit={(done: boolean, text: string) => onEditTask(task?.id, i, done, text)}
+            onCheck={() => onEditTask(task?.id, i, !task.done, task.title)}
+            onRemove={() => onDeleteTask(i, task?.id)}
           />
         ))}
       </div>
 
       <div className="pt-5">
         <Button
-          className={`border-2 border-gray-500 ${
-            !state.pendingChanges?.length && 'cursor-not-allowed opacity-50'
-          }`}
+          className={`border-2 border-gray-500 ${!state.pendingChanges?.length && 'cursor-not-allowed opacity-50'
+            }`}
           onClick={onConfirm}>
           <span>Confirm Changes</span>
         </Button>

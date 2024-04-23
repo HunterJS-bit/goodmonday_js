@@ -34,7 +34,8 @@ class HttpService {
   }
 
   async request(method: string, url: string, options: any) {
-    try {
+    try
+    {
       const response = await this.http.request({
         method,
         url,
@@ -42,12 +43,14 @@ class HttpService {
       });
 
       // Check if response status is not in the range 2xx
-      if (response.status < 200 || response.status >= 300) {
+      if (response.status < 200 || response.status >= 300)
+      {
         throw new Error(response.data);
       }
 
       return response;
-    } catch (error) {
+    } catch (error)
+    {
       // Handle errors from Axios or HTTP errors
       this.normalizeError(error);
       throw error; // Re-throw the error to propagate it to the caller

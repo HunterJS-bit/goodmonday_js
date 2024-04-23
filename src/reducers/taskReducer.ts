@@ -1,4 +1,3 @@
-import TasksPage from '../components/tasks';
 import { Task } from '../interfaces/Task';
 
 interface PendingChange {
@@ -11,15 +10,17 @@ export interface State {
   prevState: State | null;
   nextState: State | null;
   tasks: Task[];
-  pendingChanges: PendingChange[];
+  pendingChanges: any[];
 }
 
 export type Action =
   | { type: 'ADD_TASK'; title: string }
-  | { type: 'DELETE_TASK'; index: number }
-  | { type: 'EDIT_TASK'; index: number; title: string; done: boolean }
+  | { type: 'DELETE_TASK'; index: number, id: string }
+  | { type: 'EDIT_TASK'; id?: string, index: number; title: string; done: boolean }
   | { type: 'UNDO' }
-  | { type: 'REDO' };
+  | { type: 'REDO' }
+  | { type: 'RESET_PENDING_CHANGES' }
+
 
 const initialState: State = {
   prevState: null,
@@ -46,9 +47,9 @@ const taskReducer = (state: State, action: Action) => {
         pendingChanges: [
           ...state.pendingChanges,
           {
-            type: 'ADD_TASK',
+            type: 'ADD',
+            index: state.tasks.length,
             task: {
-              index: state.tasks.length,
               title: action.title,
               done: false
             }
@@ -56,49 +57,63 @@ const taskReducer = (state: State, action: Action) => {
         ]
       };
     }
-    case 'DELETE_TASK': {
-      const { index } = action;
-      const before = state.tasks.slice(0, index);
-      const after = state.tasks.slice(index + 1);
-      const newTodos = [...before, ...after];
+    case 'EDIT_TASK': {
+      const { id, index, title, done } = action;
+      const newItem = { ...state.tasks[index], title, done };
+      const newTodos = [
+        ...state.tasks.slice(0, index),
+        newItem,
+        ...state.tasks.slice(index + 1)
+      ];
+
+      let pendingChanges = state.pendingChanges.filter(task => task.index !== index);
+
+      if (id)
+      {
+        pendingChanges.push({
+          type: 'EDIT',
+          id,
+          task: { title, done }
+        });
+      } else
+      {
+        pendingChanges.push({
+          type: 'EDIT',
+          index,
+          task: { title, done }
+        });
+      }
+
       return {
         ...state,
         prevState: state,
         nextState: null,
         tasks: newTodos,
-        pendingChanges: [
-          ...state.pendingChanges,
-          {
-            type: 'DELETE_TASK',
-            task: {
-              id: index
-            }
-          }
-        ]
+        pendingChanges: pendingChanges
       };
     }
-    case 'EDIT_TASK': {
-      const { index, title, done } = action;
-      const before = state.tasks.slice(0, index);
-      const after = state.tasks.slice(index + 1);
-      const newItem = { ...state.tasks[index], title, done };
-      const newTodos = [...before, newItem, ...after];
+    case 'DELETE_TASK': {
+      const { id, index } = action;
+      const newTodos = [
+        ...state.tasks.slice(0, index),
+        ...state.tasks.slice(index + 1)
+      ];
+
+      let pendingChanges;
+      if (id)
+      {
+        pendingChanges = [...state.pendingChanges, { type: 'DELETE', id }];
+      } else
+      {
+        pendingChanges = state.pendingChanges.filter(item => item.index !== index);
+      }
+
       return {
         ...state,
         prevState: state,
         nextState: null,
         tasks: newTodos,
-        pendingChanges: [
-          ...state.pendingChanges,
-          {
-            type: 'EDIT_TASK',
-            task: {
-              index,
-              title,
-              done
-            }
-          }
-        ]
+        pendingChanges: [...pendingChanges]
       };
     }
     case 'UNDO': {
@@ -109,6 +124,10 @@ const taskReducer = (state: State, action: Action) => {
       };
     }
     case 'REDO': {
+      if (!state.nextState) throw new Error('No nextState to redo to.');
+      return state.nextState;
+    }
+    case 'RESET_PENDING_CHANGES': {
       if (!state.nextState) throw new Error('No nextState to redo to.');
       return state.nextState;
     }
