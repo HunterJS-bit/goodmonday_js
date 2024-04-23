@@ -1,8 +1,10 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layout/common";
-import Home from "../pages/Home";
+import ProtectedRoute from "../pages/auth/PrivateRoute";
+import HomePage from "../pages/Home";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
+
 
 const router = createBrowserRouter([
     {
@@ -10,12 +12,12 @@ const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
             {
-                path: "/login",
-                element: <LoginPage />
+                path: "/",
+                element: <ProtectedRoute element={HomePage} />
             },
             {
-                path: "/",
-                element: <Home />,
+                path: "/login",
+                element: <LoginPage />,
             },
             {
                 path: "/register",
