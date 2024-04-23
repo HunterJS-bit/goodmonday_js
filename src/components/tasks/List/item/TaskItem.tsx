@@ -28,13 +28,13 @@ const TaskItem: React.FC<TaskItemProps> = ({ text, isCompleted, onCheck, onRemov
     setText(text);
   };
 
+
   return (
     <div className="flex mb-4 items-center">
       {!isEdit && (
         <p
-          className={`w-full text-grey-darkest ${
-            isCompleted && 'line-through'
-          } hover:cursor-pointer`}
+          className={`w-full text-grey-darkest ${isCompleted && 'line-through'
+            } hover:cursor-pointer`}
           onClick={onCheck}>
           {text}
         </p>

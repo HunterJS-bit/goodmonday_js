@@ -1,6 +1,8 @@
+import TasksPage from '../components/tasks';
 import { Task } from '../interfaces/Task';
 
 interface PendingChange {
+  id?: string;
   type: string;
   task: Task;
 }
@@ -27,7 +29,8 @@ const initialState: State = {
 };
 
 const taskReducer = (state: State, action: Action) => {
-  switch (action.type) {
+  switch (action.type)
+  {
     case 'ADD_TASK': {
       return {
         ...state,
@@ -45,6 +48,7 @@ const taskReducer = (state: State, action: Action) => {
           {
             type: 'ADD_TASK',
             task: {
+              index: state.tasks.length,
               title: action.title,
               done: false
             }
@@ -77,7 +81,7 @@ const taskReducer = (state: State, action: Action) => {
       const { index, title, done } = action;
       const before = state.tasks.slice(0, index);
       const after = state.tasks.slice(index + 1);
-      const newItem = { ...state.tasks[index], title };
+      const newItem = { ...state.tasks[index], title, done };
       const newTodos = [...before, newItem, ...after];
       return {
         ...state,
@@ -89,6 +93,7 @@ const taskReducer = (state: State, action: Action) => {
           {
             type: 'EDIT_TASK',
             task: {
+              index,
               title,
               done
             }
