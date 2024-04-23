@@ -1,55 +1,50 @@
-import { useContext, createContext, useMemo, ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
-import { useLocalState } from "../hooks/useLocalStorage";
+import { useContext, createContext, useMemo, ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useLocalState } from '../hooks/useLocalStorage';
 
 interface AuthContextType {
-    loggedUser: string;
-    logIn: (token: string) => void;
-    logOut: () => void;
+  loggedUser: string;
+  logIn: (token: string) => void;
+  logOut: () => void;
 }
-
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 interface AuthProviderProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
-const AuthProvider = ({ children }: AuthProviderProps) => {
+function AuthProvider({ children }: AuthProviderProps) {
+  const [loggedUser, setLoggedUser] = useLocalState('loggedUser', '');
 
-    const [loggedUser, setLoggedUser] = useLocalState('loggedUser', '');
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-
-
-    const logIn = async (token: string) => {
-        if (token)
-        {
-            setLoggedUser(token);
-            navigate('/');
-        }
-    };
-
-
-    const logOut = () => {
-        setLoggedUser('');
-        navigate('/login');
+  const logIn = async (token: string) => {
+    if (token) {
+      setLoggedUser(token);
+      navigate('/');
     }
+  };
 
-    const value = useMemo(
-        () => ({
-            loggedUser,
-            logIn,
-            logOut,
-        }),
-        [loggedUser]
-    );
+  const logOut = () => {
+    setLoggedUser('');
+    navigate('/login');
+  };
 
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+  const value = useMemo(
+    () => ({
+      loggedUser,
+      logIn,
+      logOut
+    }),
+    [loggedUser]
+  );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
 
 export default AuthProvider;
 
 export const useAuth = () => {
-    return useContext(AuthContext);
+  return useContext(AuthContext);
 };
