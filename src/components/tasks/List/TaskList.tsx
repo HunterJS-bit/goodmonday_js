@@ -38,7 +38,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
 
     const onConfirm = async () => {
         const { pendingChanges } = state;
-        await taskListCrudAction(pendingChanges);
+        console.log('changes', pendingChanges)
     }
 
     return (
