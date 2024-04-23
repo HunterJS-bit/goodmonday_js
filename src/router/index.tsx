@@ -1,4 +1,4 @@
-import { Outlet, createBrowserRouter } from "react-router-dom";
+import { Outlet, createBrowserRouter, Routes } from "react-router-dom";
 import MainLayout from "../layout/common";
 import ProtectedRoute from "../pages/auth/PrivateRoute";
 import HomePage from "../pages/Home";
@@ -12,19 +12,19 @@ const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
             {
-                path: "/",
-                element: <ProtectedRoute element={HomePage} />
-            },
-            {
                 path: "/login",
                 element: <LoginPage />,
             },
             {
                 path: "/register",
                 element: <RegisterPage />
-            }
+            },
+            {
+                path: "/",
+                element: <ProtectedRoute element={<HomePage />} />
+            },
         ]
-    }
+    },
 ]);
 
 

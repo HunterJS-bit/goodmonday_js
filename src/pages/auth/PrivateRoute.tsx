@@ -1,9 +1,12 @@
 import React from 'react';
-import { Navigate, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
+interface ProtectedRouteProps {
+    element: React.ReactNode;
+}
 
-const ProtectedRoute = ({ element, ...rest }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, ...rest }) => {
     const { loggedUser } = useAuth();
 
     if (!loggedUser)
@@ -11,7 +14,7 @@ const ProtectedRoute = ({ element, ...rest }) => {
         return <Navigate to="/login" replace />;
     }
 
-    return <Route {...rest} element={element} />;
+    return (<>{element}</>);
 };
 
 export default ProtectedRoute;

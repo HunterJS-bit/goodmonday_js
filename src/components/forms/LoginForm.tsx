@@ -24,17 +24,19 @@ const LoginForm = () => {
     } = useForm(
         {
             defaultValues: {
-                email: "test1user@gmail.com",
-                password: "123456",
+                email: "",
+                password: "",
             },
         }
     );
 
     const onSubmit = async (data: LoginData) => {
-        try {
+        try
+        {
             const res = await logInUser(data)
             logIn(res?.token);
-        } catch (e) {
+        } catch (e)
+        {
             console.log('err', e)
         }
         reset();
