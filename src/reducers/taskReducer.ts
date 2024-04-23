@@ -15,7 +15,7 @@ export interface State {
 
 export type Action =
   | { type: 'ADD_TASK'; title: string }
-  | { type: 'DELETE_TASK'; index: number, id: string }
+  | { type: 'DELETE_TASK'; index: number, id?: string }
   | { type: 'EDIT_TASK'; id?: string, index: number; title: string; done: boolean }
   | { type: 'UNDO' }
   | { type: 'REDO' }
