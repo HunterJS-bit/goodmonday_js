@@ -37,10 +37,10 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
   };
 
   const onConfirm = async () => {
-    taskListCrudAction(state.pendingChanges)
+    await taskListCrudAction(state.pendingChanges);
+    dispatch({ type: "RESET_PENDING_CHANGES" })
   };
 
-  console.log('IDemoo', state.pendingChanges)
   return (
     <>
       <div className="mt-8 mb-3">

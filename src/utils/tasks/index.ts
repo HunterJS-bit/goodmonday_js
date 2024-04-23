@@ -3,19 +3,25 @@ import { addTask, updateTask, removeTask } from '../../services/api/services/goo
 const taskListCrudAction = async (taskList: any) => {
   for (let item of taskList)
   {
-    if (item?.type === 'EDIT')
+    switch (item?.type)
     {
-      if (!item.id)
-      {
+      case 'ADD':
         await addTask(item?.task);
-      } else
-      {
-        await updateTask(item.id, item.task);
-      }
-    }
-    if (item?.type === 'DELETE')
-    {
-      await removeTask(item.id);
+        break;
+      case 'EDIT':
+        if (!item.id)
+        {
+          await addTask(item?.task);
+        } else
+        {
+          await updateTask(item.id, item.task);
+        }
+        break;
+      case 'DELETE':
+        await removeTask(item.id);
+        break;
+      default:
+        break;
     }
   }
 };
