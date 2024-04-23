@@ -68,21 +68,11 @@ const taskReducer = (state: State, action: Action) => {
 
       let pendingChanges = state.pendingChanges.filter(task => task.index !== index);
 
-      if (id)
-      {
-        pendingChanges.push({
-          type: 'EDIT',
-          id,
-          task: { title, done }
-        });
-      } else
-      {
-        pendingChanges.push({
-          type: 'EDIT',
-          index,
-          task: { title, done }
-        });
-      }
+      pendingChanges.push({
+        type: 'EDIT',
+        ...(id ? { id } : { index }),
+        task: { title, done }
+      });
 
       return {
         ...state,
@@ -99,14 +89,9 @@ const taskReducer = (state: State, action: Action) => {
         ...state.tasks.slice(index + 1)
       ];
 
-      let pendingChanges;
-      if (id)
-      {
-        pendingChanges = [...state.pendingChanges, { type: 'DELETE', id }];
-      } else
-      {
-        pendingChanges = state.pendingChanges.filter(item => item.index !== index);
-      }
+      const pendingChanges = id
+        ? [...state.pendingChanges, { type: 'DELETE', id }]
+        : state.pendingChanges.filter(item => item.index !== index);
 
       return {
         ...state,
@@ -128,8 +113,10 @@ const taskReducer = (state: State, action: Action) => {
       return state.nextState;
     }
     case 'RESET_PENDING_CHANGES': {
-      if (!state.nextState) throw new Error('No nextState to redo to.');
-      return state.nextState;
+      return {
+        ...state,
+        pendingChanges: []
+      };
     }
     default:
   }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Button from '../../../common/Buttons/Button';
-import Input from '../../../common/inputs/Input';
 
 type TaskItemProps = {
   text: string;
