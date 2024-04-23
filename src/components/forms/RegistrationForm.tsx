@@ -10,41 +10,6 @@ import {
   passwordValidation
 } from '../../utils/validations/registration';
 
-<<<<<<< HEAD
-
-const RegistrationFrom = () => {
-
-    const {
-        register,
-        handleSubmit,
-        reset,
-        watch,
-        formState: { errors },
-    } = useForm(
-        {
-            defaultValues: {
-                name: "",
-                email: "",
-                password: "",
-                repassword: ""
-            },
-        }
-    );
-
-    const password = useRef({});
-    password.current = watch("password", "");
-
-    const onSubmit = async (data: RegistrationData) => {
-
-        try
-        {
-            const res = await registerUser(data)
-        } catch (e)
-        {
-            console.log('error', e)
-        }
-        reset();
-=======
 function RegistrationFrom() {
   const {
     register,
@@ -58,7 +23,6 @@ function RegistrationFrom() {
       email: '',
       password: '',
       repassword: ''
->>>>>>> c9fd4ff... chore(ts-warning): linting & ts fixes
     }
   });
 

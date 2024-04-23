@@ -23,12 +23,10 @@ function LoginForm() {
   });
 
   const onSubmit = async (data: LoginData) => {
-    try
-    {
+    try {
       const res = await logInUser(data);
       logIn && logIn(res?.token);
-    } catch (e)
-    {
+    } catch (e) {
       console.log('err', e);
     }
     reset();
