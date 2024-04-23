@@ -64,6 +64,7 @@ const addTask = async (payload: TaskCreatePayload) => {
     return data;
   } catch (error)
   {
+    handleAxiosError(error);
     return error;
   }
 };

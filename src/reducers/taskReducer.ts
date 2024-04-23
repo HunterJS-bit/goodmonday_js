@@ -1,16 +1,10 @@
 import { Task } from '../interfaces/Task';
 
-interface PendingChange {
-  id?: string;
-  type: string;
-  task: Task;
-}
-
 export interface State {
   prevState: State | null;
   nextState: State | null;
   tasks: Task[];
-  pendingChanges: any[];
+  pendingChanges: any[]; // track changes to how we need to send request
 }
 
 export type Action =
@@ -29,30 +23,29 @@ const initialState: State = {
   pendingChanges: []
 };
 
+// todo add tests for reducer logic a bit unclear
 const taskReducer = (state: State, action: Action) => {
   switch (action.type)
   {
     case 'ADD_TASK': {
+      const newEmptyTask = {
+        title: action.title,
+        done: false
+      }
       return {
         ...state,
         prevState: state,
         nextState: null,
         tasks: [
           ...state.tasks,
-          {
-            title: action.title,
-            done: false
-          }
+          newEmptyTask
         ],
         pendingChanges: [
           ...state.pendingChanges,
           {
             type: 'ADD',
             index: state.tasks.length,
-            task: {
-              title: action.title,
-              done: false
-            }
+            task: newEmptyTask
           }
         ]
       };
