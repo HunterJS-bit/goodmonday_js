@@ -1,5 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
+import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../services/api/services/goodMonday.service';
 import Button from '../common/Buttons/Button';
 import Input from '../common/inputs/Input';
@@ -28,14 +30,20 @@ function RegistrationFrom() {
 
   const password = useRef({});
   password.current = watch('password', '');
+  const navigate = useNavigate();
 
   const onSubmit = async (data: RegistrationData) => {
-    try {
-      const res = await registerUser(data);
-    } catch (e) {
+    try
+    {
+      const { data: userToken } = await registerUser(data);
+      if (userToken?.token)
+      {
+        toast.success('User created succesfully, you can try to login');
+      }
+    } catch (e)
+    {
       console.log('error', e);
     }
-    reset();
   };
 
   return (
