@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { apiConfig } from '../config/apiConfig';
 
 const HTTP_METHODS = Object.freeze({
@@ -12,6 +12,8 @@ const HTTP_METHODS = Object.freeze({
 
 
 class HttpService {
+    http: AxiosInstance; // Define http as AxiosInstance
+
     constructor() {
         this.http = axios.create({
             ...apiConfig,
@@ -34,8 +36,9 @@ class HttpService {
         return { 'Content-Type': 'application/json', ...this.getAuthorization() }
     }
 
-    async request(method: string, url: string, options) {
-        try {
+    async request(method: string, url: string, options: any) {
+        try
+        {
             const response = await this.http.request({
                 method,
                 url,
@@ -43,25 +46,27 @@ class HttpService {
             });
 
             // Check if response status is not in the range 2xx
-            if (response.status < 200 || response.status >= 300) {
+            if (response.status < 200 || response.status >= 300)
+            {
                 throw new Error(response.data);
             }
 
             return response;
-        } catch (error) {
+        } catch (error)
+        {
             // Handle errors from Axios or HTTP errors
             this.normalizeError(error);
             throw error; // Re-throw the error to propagate it to the caller
         }
     }
 
-    async get(url: string, params) {
+    async get(url: string, params: Record<string, any>) {
         return this.request(HTTP_METHODS.GET, url, {
             params,
             headers: this.setupHeaders()
         })
     }
-    async update(url: string, params, payload) {
+    async update(url: string, params: Record<string, any>, payload: any) {
         return this.request(HTTP_METHODS.PUT, url, {
             params,
             data: payload,
@@ -69,7 +74,7 @@ class HttpService {
         })
     }
 
-    async remove(url: string, params, payload) {
+    async remove(url: string, params: Record<string, any>, payload: any) {
         return this.request(HTTP_METHODS.DELETE, url, {
             params,
             data: payload,
@@ -77,7 +82,7 @@ class HttpService {
         })
     }
 
-    async create(url, params, payload) {
+    async create(url: string, params: Record<string, any>, payload: any) {
         return this.request(HTTP_METHODS.POST, url, {
             params,
             data: payload,
@@ -100,7 +105,7 @@ class HttpService {
     }
 
 
-    normalizeError(error) {
+    normalizeError(error: any) {
         return Promise.reject(error);
     }
 };

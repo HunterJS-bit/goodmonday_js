@@ -14,7 +14,7 @@ import { useAuth } from '../../context/AuthContext';
 
 const LoginForm = () => {
 
-    const { logIn } = useAuth();
+    const { logIn } = useAuth() || {};
 
     const {
         register,

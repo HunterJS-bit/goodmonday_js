@@ -1,9 +1,10 @@
 import React, { ChangeEventHandler } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
-type InputProps = {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     value?: string;
     onChange?: ChangeEventHandler<HTMLInputElement>;
-    register?: () => void;
+    register?: UseFormRegisterReturn<string>;
 };
 
 

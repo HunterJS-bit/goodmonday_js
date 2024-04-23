@@ -7,7 +7,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, ...rest }) => {
-    const { loggedUser } = useAuth();
+    const { loggedUser } = useAuth() || {};
 
     if (!loggedUser)
     {

@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 const Navbar = () => {
 
 
-    const { logOut, loggedUser } = useAuth();
+    const { logOut, loggedUser } = useAuth() || {};
 
     const publicRoutes = {
         login: '/login',
