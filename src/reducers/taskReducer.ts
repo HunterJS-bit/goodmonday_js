@@ -13,22 +13,11 @@ export interface State {
 }
 
 export type Action =
-<<<<<<< HEAD
     | { type: 'ADD_TASK'; title: string }
     | { type: 'DELETE_TASK'; index: number }
     | { type: 'EDIT_TASK'; index: number; title: string; done: boolean }
     | { type: 'UNDO' }
     | { type: 'REDO' };
-=======
-    | { type: "ADD_TASK"; title: string }
-    | { type: "DELETE_TASK"; index: number }
-    | { type: "EDIT_TASK"; index: number; title: string; done: boolean }
-    | { type: "UNDO" }
-    | { type: "REDO" };
-
-
-
->>>>>>> e0606f1... feat(tasks): minor refactor update taskItems
 
 const initialState: State = {
     prevState: null,

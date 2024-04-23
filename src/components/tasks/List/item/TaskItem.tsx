@@ -10,26 +10,23 @@ type TaskItemProps = {
     onEdit: (isCompleted: boolean, newText: string) => void;
 };
 
-
 const TaskItem: React.FC<TaskItemProps> = ({ text, isCompleted, onCheck, onRemove, onEdit }) => {
-
     const [isEdit, setIsEdit] = useState(false);
     const [taskText, setText] = useState(text);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setText(e.target.value)
-    }
+        setText(e.target.value);
+    };
 
     const onEditAction = () => {
         setIsEdit(!isEdit);
         onEdit(isCompleted, taskText);
-    }
+    };
 
     const cancelEdit = () => {
-        setIsEdit(!isEdit)
+        setIsEdit(!isEdit);
         setText(text);
-    }
-
+    };
 
     return (<div className="flex mb-4 items-center">
         {!isEdit && <p className={`w-full text-grey-darkest ${isCompleted && 'line-through'} hover:cursor-pointer`} onClick={onCheck}>{text}</p>}

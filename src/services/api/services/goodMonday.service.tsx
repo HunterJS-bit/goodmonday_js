@@ -1,5 +1,5 @@
-import HttpService from "../http/http.service";
 import { toast } from 'react-toastify';
+import HttpService from '../http/http.service';
 import { RegistrationPayload, LoginData as LoginPayload } from '../../../interfaces/User';
 
 import { TaskCreatePayload, TaskUpdatePayload } from '../../../interfaces/Task';

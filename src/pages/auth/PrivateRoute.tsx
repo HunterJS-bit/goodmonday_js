@@ -3,18 +3,17 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 interface ProtectedRouteProps {
-    element: React.ReactNode;
+  element: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, ...rest }) => {
-    const { loggedUser } = useAuth() || {};
+  const { loggedUser } = useAuth() || {};
 
-    if (!loggedUser)
-    {
-        return <Navigate to="/login" replace />;
-    }
+  if (!loggedUser) {
+    return <Navigate to="/login" replace />;
+  }
 
-    return (<>{element}</>);
+  return <>{element}</>;
 };
 
 export default ProtectedRoute;

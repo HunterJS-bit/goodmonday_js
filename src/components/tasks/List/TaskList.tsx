@@ -5,10 +5,9 @@ import { Task } from '../../../interfaces/Task';
 import TaskItem from './item/TaskItem';
 import Button from '../../common/Buttons/Button';
 
-
 type TaskListProps = {
-    tasks: Task[]
-}
+    tasks: Task[];
+};
 
 
 const TaskList: React.FC<TaskListProps> = ({ tasks }) => {

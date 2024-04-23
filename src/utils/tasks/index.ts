@@ -1,5 +1,4 @@
-import { addTask, updateTask, removeTask } from "../../services/api/services/goodMonday.service";
-
+import { addTask, updateTask, removeTask } from '../../services/api/services/goodMonday.service';
 
 const taskListCrudAction = async (taskList: any) => {
     // const taskPromises = await Promise.all(taskList.map(async (action) => {
