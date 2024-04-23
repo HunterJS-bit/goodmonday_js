@@ -20,8 +20,9 @@ class HttpService {
     }
 
     getAuthorization() {
-        const token = '';
-        return token ? { Authorization: `Bearer ${token}` } : {}
+        const token = window.localStorage.getItem('loggedUser') || '';
+        const tokenWithRemoveQuotes = token.slice(1, -1);
+        return token ? { Authorization: `Bearer ${tokenWithRemoveQuotes}` } : {}
     }
 
     service() {
@@ -40,19 +41,27 @@ class HttpService {
                 url,
                 ...options
             });
+
+            // Check if response status is not in the range 2xx
+            if (response.status < 200 || response.status >= 300) {
+                throw new Error(response.data);
+            }
+
             return response;
         } catch (error) {
+            // Handle errors from Axios or HTTP errors
             this.normalizeError(error);
+            throw error; // Re-throw the error to propagate it to the caller
         }
     }
 
-    async get(url, params) {
+    async get(url: string, params) {
         return this.request(HTTP_METHODS.GET, url, {
             params,
             headers: this.setupHeaders()
         })
     }
-    async update(url, params, payload) {
+    async update(url: string, params, payload) {
         return this.request(HTTP_METHODS.PUT, url, {
             params,
             data: payload,
@@ -60,7 +69,7 @@ class HttpService {
         })
     }
 
-    async remove(url, params, payload) {
+    async remove(url: string, params, payload) {
         return this.request(HTTP_METHODS.DELETE, url, {
             params,
             data: payload,

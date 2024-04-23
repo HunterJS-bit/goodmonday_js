@@ -1,13 +1,13 @@
 import React from 'react';
 import LoginForm from '../components/forms/LoginForm';
-
+import Page from '../layout/PageLayout';
 
 
 const LoginPage = () => {
 
-    return (<>
+    return (<Page>
         <LoginForm />
-    </>)
+    </Page>)
 
 };
 
