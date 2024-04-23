@@ -2,17 +2,15 @@ import { addTask, updateTask, removeTask } from "../../services/api/services/goo
 
 
 const taskListCrudAction = async (taskList) => {
-    // const taskPromises = await Promise.all(taskList.map(async (action) => {
-    //     if (action.type === 'ADD_TODO') {
-    //         return addTask(action.task);
-    //     }
-    //     if (action.type === 'EDIT_TODO') {
-    //         return updateTask(action.task.id, action.task);
-    //     }
-    //     if (action.type === 'DELETE_TODO') {
-    //         return removeTask(action.task.id);
-    //     }))
-    // return taskPromises;
+    const ids = [];
+    for (task in taskList)
+    {
+        if (item.type === "ADD_TASK")
+        {
+            const addedTask = await addTask(item.task);
+            ids.push(addedTask);
+        }
+    }
 }
 
 

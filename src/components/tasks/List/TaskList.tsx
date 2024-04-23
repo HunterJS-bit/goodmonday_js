@@ -38,7 +38,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
 
     const onConfirm = async () => {
         const { pendingChanges } = state;
-        await taskListCrudAction(pendingChanges);
+        console.log('changes', pendingChanges)
     }
 
     return (
@@ -77,7 +77,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
 
             <div className='pt-5'>
                 <Button
-                    className={`border-2 border-gray-500 ${!state.tasks?.length && 'cursor-not-allowed opacity-50'}`}
+                    className={`border-2 border-gray-500 ${!state.pendingChanges?.length && 'cursor-not-allowed opacity-50'}`}
                     onClick={onConfirm}
                 >
                     <span>Confirm Changes</span>
