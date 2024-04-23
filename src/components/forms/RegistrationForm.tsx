@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { registerUser } from '../../services/api/services/goodMonday.service';
 import Button from '../common/Buttons/Button';
@@ -7,11 +7,8 @@ import { RegistrationData } from '../../interfaces/User';
 import { userNameValidation, emailvalidation, passwordValidation } from '../../utils/validations/registration';
 
 
-
-
 const RegistrationFrom = () => {
 
-    const [apiErrors, setApiErrors] = useState(null)
     const {
         register,
         handleSubmit,
@@ -29,9 +26,11 @@ const RegistrationFrom = () => {
         }
     );
 
-    const password = watch('password', '');
+    const password = useRef({});
+    password.current = watch("password", "");
 
     const onSubmit = async (data: RegistrationData) => {
+
         try {
             const res = await registerUser(data)
         } catch (e) {
@@ -81,7 +80,9 @@ const RegistrationFrom = () => {
                 <div className="md:w-2/3">
                     <Input
                         name={'password'}
-                        register={register("password", passwordValidation)}
+                        register={register("password", {
+                            ...passwordValidation
+                        })}
                         type="password" />
                     {errors?.password && <p>{errors.password.message}</p>}
                 </div>
@@ -95,7 +96,11 @@ const RegistrationFrom = () => {
                 <div className="md:w-2/3">
                     <Input
                         name={'repassword'}
-                        register={register("repassword", passwordValidation)}
+                        register={register("repassword", {
+                            ...passwordValidation,
+                            validate: value =>
+                                value === password.current || "The passwords do not match"
+                        })}
                         type="password" />
                     {errors?.repassword && <p>{errors.repassword.message}</p>}
                 </div>

@@ -9,7 +9,6 @@ type TaskItemProps = {
 };
 
 
-
 const TaskItem: React.FC<TaskItemProps> = ({ text, isCompleted, onCheck, onRemove, onEdit }) => {
 
     const [isEdit, setIsEdit] = useState(false);

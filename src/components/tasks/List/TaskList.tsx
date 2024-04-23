@@ -1,5 +1,4 @@
 import React, { useReducer } from 'react';
-import PropTypes from 'prop-types';
 import { taskReducer, initialState } from '../../../reducers/taskReducer';
 import { taskListCrudAction } from '../../../utils/tasks';
 import { Task } from '../../../interfaces/Task';
@@ -16,7 +15,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
 
 
     const onAddTask = () => {
-        dispatch({ type: "ADD_TODO", title: 'asdsds' });
+        dispatch({ type: "ADD_TASK", title: 'asdsds' });
     }
 
     const onUndo = () => {
@@ -28,11 +27,11 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
     }
 
     const onEditTask = (index: number, done: boolean, title: string) => {
-        dispatch({ type: 'EDIT_TODO', index, done, title })
+        dispatch({ type: 'EDIT_TASK', index, done, title })
     }
 
     const onDeleteTask = (index: number) => {
-        dispatch({ type: "DELETE_TODO", index })
+        dispatch({ type: "DELETE_TASK", index })
     }
 
     const onConfirm = async () => {

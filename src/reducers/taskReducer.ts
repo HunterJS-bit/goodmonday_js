@@ -1,13 +1,38 @@
-const initialState = {
+import { Task } from '../interfaces/Task';
+
+interface PendingChange {
+    type: string;
+    task: Task;
+}
+
+interface State {
+    prevState: State | null;
+    nextState: State | null;
+    tasks: Task[];
+    pendingChanges: PendingChange[];
+}
+
+type Action =
+    | { type: "ADD_TASK"; title: string }
+    | { type: "DELETE_TASK"; index: number }
+    | { type: "EDIT_TASK"; index: number; title: string; done: boolean }
+    | { type: "UNDO" }
+    | { type: "REDO" };
+
+
+
+
+const initialState: State = {
     prevState: null,
     nextState: null,
     tasks: [],
     pendingChanges: []
 };
 
-const taskReducer = (state, action) => {
-    switch (action.type) {
-        case "ADD_TODO": {
+const taskReducer = (state: State, action: Action) => {
+    switch (action.type)
+    {
+        case "ADD_TASK": {
             return {
                 ...state,
                 prevState: state,
@@ -20,14 +45,14 @@ const taskReducer = (state, action) => {
                     },
                 ],
                 pendingChanges: [...state.pendingChanges, {
-                    type: 'ADD_TODO', task: {
+                    type: 'ADD_TASK', task: {
                         title: action.title,
                         done: false
                     }
                 }]
             };
         }
-        case "DELETE_TODO": {
+        case "DELETE_TASK": {
             const { index } = action;
             const before = state.tasks.slice(0, index);
             const after = state.tasks.slice(index + 1);
@@ -38,13 +63,13 @@ const taskReducer = (state, action) => {
                 nextState: null,
                 tasks: newTodos,
                 pendingChanges: [...state.pendingChanges, {
-                    type: 'DELETE_TODO', task: {
+                    type: 'DELETE_TASK', task: {
                         id: index
                     }
                 }]
             };
         }
-        case "EDIT_TODO": {
+        case "EDIT_TASK": {
             const { index, title, done } = action;
             const before = state.tasks.slice(0, index);
             const after = state.tasks.slice(index + 1);
@@ -56,7 +81,7 @@ const taskReducer = (state, action) => {
                 nextState: null,
                 tasks: newTodos,
                 pendingChanges: [...state.pendingChanges, {
-                    type: 'EDIT_TODO', task: {
+                    type: 'EDIT_TASK', task: {
                         title,
                         done
                     }
