@@ -29,11 +29,11 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
     }
 
     const onEditTask = (index: number, done: boolean, title: string) => {
-        dispatch({ type: 'EDIT_TODO', index, done, title })
+        dispatch({ type: 'EDIT_TASK', index, done, title })
     }
 
     const onDeleteTask = (index: number) => {
-        dispatch({ type: "DELETE_TODO", index })
+        dispatch({ type: "DELETE_TASK", index })
     }
 
     const onConfirm = async () => {

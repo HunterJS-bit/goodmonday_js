@@ -9,7 +9,6 @@ import { userNameValidation, emailvalidation, passwordValidation } from '../../u
 
 const RegistrationFrom = () => {
 
-    const [apiErrors, setApiErrors] = useState(null)
     const {
         register,
         handleSubmit,
