@@ -28,11 +28,11 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
     dispatch({ type: 'REDO' });
   };
 
-  const onEditTask = (id: string, index: number, done: boolean, title: string) => {
+  const onEditTask = (id: string | undefined, index: number, done: boolean, title: string) => {
     dispatch({ type: 'EDIT_TASK', id, index, done, title });
   };
 
-  const onDeleteTask = (index: number, id: string) => {
+  const onDeleteTask = (index: number, id: string | undefined) => {
     dispatch({ type: 'DELETE_TASK', index, id });
   };
 
