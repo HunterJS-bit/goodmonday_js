@@ -7,23 +7,28 @@ function TasksPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const { items } = await getTasks();
-        setTaskList(items);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching tasks:', error);
-      }
-    };
-
     fetchTasks();
   }, []);
 
-  if (loading) {
+  const fetchTasks = async () => {
+    try
+    {
+      setLoading(true)
+      const { items } = await getTasks();
+      setTaskList(items);
+      setLoading(false);
+    } catch (error)
+    {
+      console.error('Error fetching tasks:', error);
+    }
+  }
+
+  if (loading)
+  {
     return <div>Loading...</div>;
   }
-  return <TaskList tasks={taskList} />;
+  const taskListProps = { tasks: taskList, reloadTaskList: fetchTasks };
+  return <TaskList {...taskListProps} />;
 }
 
 export default TasksPage;

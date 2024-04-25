@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../../../common/Buttons/Button';
+import RemoveIcon from '../../../common/icons/removeIcon';
+
 
 type TaskItemProps = {
   text: string;
@@ -63,18 +65,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ text, isCompleted, onCheck, onRemov
         <Button
           className="flex text-red-500 border-2 border-red-500 rounded-lg hover:bg-red-500 hover:text-white "
           onClick={onRemove}>
-          <svg
-            className="h-6 w-6 hover:text-white"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round">
-            {' '}
-            <circle cx="12" cy="12" r="10" /> <line x1="15" y1="9" x2="9" y2="15" />{' '}
-            <line x1="9" y1="9" x2="15" y2="15" />
-          </svg>
+          <RemoveIcon />
           <span>Remove</span>
         </Button>
       )}
