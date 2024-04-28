@@ -1,4 +1,6 @@
 import { Task } from '../interfaces/Task';
+import { ADD_TASK, DELETE_TASK, EDIT_TASK, REDO, UNDO, RESET_PENDING_CHANGES, SET_TASK_LIST } from './taskActions';
+
 
 export interface State {
   prevState: State | null;
@@ -8,12 +10,13 @@ export interface State {
 }
 
 export type Action =
-  | { type: 'ADD_TASK'; title: string }
-  | { type: 'DELETE_TASK'; index: number, id?: string }
-  | { type: 'EDIT_TASK'; id?: string, index: number; title: string; done: boolean }
-  | { type: 'UNDO' }
-  | { type: 'REDO' }
-  | { type: 'RESET_PENDING_CHANGES' }
+  | { type: typeof ADD_TASK; title: string }
+  | { type: typeof DELETE_TASK; index: number, id?: string }
+  | { type: typeof EDIT_TASK; id?: string, index: number; title: string; done: boolean }
+  | { type: typeof UNDO }
+  | { type: typeof REDO }
+  | { type: typeof RESET_PENDING_CHANGES }
+  | { type: typeof SET_TASK_LIST; tasks: Task[] }
 
 
 const initialState: State = {
@@ -27,7 +30,7 @@ const initialState: State = {
 const taskReducer = (state: State, action: Action) => {
   switch (action.type)
   {
-    case 'ADD_TASK': {
+    case ADD_TASK: {
       const newEmptyTask = {
         title: action.title,
         done: false
@@ -50,7 +53,7 @@ const taskReducer = (state: State, action: Action) => {
         ]
       };
     }
-    case 'EDIT_TASK': {
+    case EDIT_TASK: {
       const { id, index, title, done } = action;
       const newItem = { ...state.tasks[index], title, done };
       const newTodos = [
@@ -75,7 +78,7 @@ const taskReducer = (state: State, action: Action) => {
         pendingChanges: pendingChanges
       };
     }
-    case 'DELETE_TASK': {
+    case DELETE_TASK: {
       const { id, index } = action;
       const newTodos = [
         ...state.tasks.slice(0, index),
@@ -94,21 +97,29 @@ const taskReducer = (state: State, action: Action) => {
         pendingChanges: [...pendingChanges]
       };
     }
-    case 'UNDO': {
+    case UNDO: {
       if (!state.prevState) throw new Error('No prevState to undo to.');
       return {
         ...state.prevState,
         nextState: state
       };
     }
-    case 'REDO': {
+    case REDO: {
       if (!state.nextState) throw new Error('No nextState to redo to.');
       return state.nextState;
     }
-    case 'RESET_PENDING_CHANGES': {
+    case RESET_PENDING_CHANGES: {
       return {
         ...state,
         pendingChanges: []
+      };
+    }
+
+    case SET_TASK_LIST: {
+      const { tasks } = action;
+      return {
+        ...state,
+        tasks: tasks,
       };
     }
     default:

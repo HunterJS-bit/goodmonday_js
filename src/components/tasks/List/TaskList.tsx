@@ -1,5 +1,6 @@
-import React, { useReducer } from 'react';
-import { taskReducer, initialState, Action } from '../../../reducers/taskReducer';
+import React from 'react';
+import { ADD_TASK, UNDO, REDO, EDIT_TASK, DELETE_TASK } from '../../../reducers/taskActions';
+import { State, Action } from '../../../reducers/taskReducer';
 import { taskListCrudAction } from '../../../utils/tasks';
 import { Task } from '../../../interfaces/Task';
 import TaskItem from './item/TaskItem';
@@ -8,42 +9,40 @@ import AddIcon from '../../common/icons/addIcon';
 
 
 type ReloadTasksFunction = () => void;
+type DispatchAction = (action: string, payload?: any) => void;
 
 type TaskListProps = {
-  tasks: Task[];
+  state: State;
+  dispatch: DispatchAction;
   reloadTaskList: ReloadTasksFunction;
 };
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, reloadTaskList }) => {
-  const [state, dispatch] = useReducer<React.Reducer<any, Action>>(taskReducer, {
-    ...initialState,
-    tasks
-  });
+const TaskList: React.FC<TaskListProps> = ({ state, dispatch, reloadTaskList }) => {
 
+  const { tasks, prevState, nextState, pendingChanges } = state;
 
   const onAddTask = () => {
-    dispatch({ type: 'ADD_TASK', title: 'Test' });
+    dispatch(ADD_TASK, { title: 'test' });
   };
 
   const onUndo = () => {
-    dispatch({ type: 'UNDO' });
+    dispatch(UNDO);
   };
 
   const onRedo = () => {
-    dispatch({ type: 'REDO' });
+    dispatch(REDO);
   };
 
   const onEditTask = (id: string | undefined, index: number, done: boolean, title: string) => {
-    dispatch({ type: 'EDIT_TASK', id, index, done, title });
+    dispatch(EDIT_TASK, { id, index, done, title })
   };
 
   const onDeleteTask = (index: number, id: string | undefined) => {
-    dispatch({ type: 'DELETE_TASK', index, id });
+    dispatch(DELETE_TASK, { index, id });
   };
 
   const onConfirm = async () => {
     await taskListCrudAction(state.pendingChanges);
-    dispatch({ type: "RESET_PENDING_CHANGES" });
     await reloadTaskList();
   };
 
@@ -51,18 +50,18 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, reloadTaskList }) => {
     <>
       <div className="mt-8 mb-3">
         <Button
-          className={`border-2 border-red-500 text-red-500 ${!state.prevState && 'cursor-not-allowed opacity-50'
+          className={`border-2 border-red-500 text-red-500 ${!prevState && 'cursor-not-allowed opacity-50'
             }`}
           onClick={onUndo}
-          disabled={!state.prevState}>
+          disabled={!prevState}>
           {' '}
           ← Undo
         </Button>
         <Button
-          className={`border-2 border-indigo-500 text-indigo-500 ml-4 ${!state.nextState && 'cursor-not-allowed opacity-50'
+          className={`border-2 border-indigo-500 text-indigo-500 ml-4 ${!nextState && 'cursor-not-allowed opacity-50'
             }`}
           onClick={onRedo}
-          disabled={!state.nextState}>
+          disabled={!nextState}>
           {' '}
           Redo →
         </Button>
@@ -74,7 +73,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, reloadTaskList }) => {
         <span>Add</span>
       </Button>
       <div className="pt-5">
-        {state.tasks.map((task: Task, i: number) => (
+        {tasks.map((task: Task, i: number) => (
           <TaskItem
             key={i}
             text={task.title}
@@ -88,7 +87,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, reloadTaskList }) => {
 
       <div className="pt-5">
         <Button
-          className={`border-2 border-gray-500 ${!state.pendingChanges?.length && 'cursor-not-allowed opacity-50'
+          className={`border-2 border-gray-500 ${!pendingChanges?.length && 'cursor-not-allowed opacity-50'
             }`}
           onClick={onConfirm}>
           <span>Confirm Changes</span>
