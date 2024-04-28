@@ -31,7 +31,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ text, isCompleted, onCheck, onRemov
 
 
   return (
-    <div className="flex mb-4 items-center">
+    <div className="flex mb-4 items-center pl-2 py-1 rounded border-gray-300 border-2">
       {!isEdit && (
         <p
           className={`w-full text-grey-darkest ${isCompleted && 'line-through'

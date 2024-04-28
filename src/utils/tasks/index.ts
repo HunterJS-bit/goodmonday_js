@@ -18,8 +18,15 @@ const taskListCrudAction = async (taskList: any) => {
       }
     });
 
-    await Promise.all(promises);
-    toast.success('Tasks updated, successfully');
+    const results = await Promise.allSettled(promises);
+    const hasError = results.some((result: any) => result?.value?.status !== 'ok');
+    if (!hasError)
+    {
+      toast.success('Tasks updated successfully');
+    } else
+    {
+      console.error('One or more promises failed');
+    }
   } catch (error)
   {
     console.error('Error occurred:', error);

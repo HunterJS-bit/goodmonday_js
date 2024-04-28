@@ -22,7 +22,7 @@ const TaskList: React.FC<TaskListProps> = ({ state, dispatch, reloadTaskList }) 
   const { tasks, prevState, nextState, pendingChanges } = state;
 
   const onAddTask = () => {
-    dispatch(ADD_TASK, { title: 'test' });
+    dispatch(ADD_TASK, { title: '' });
   };
 
   const onUndo = () => {
